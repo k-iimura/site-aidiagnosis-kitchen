@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI活用スタイル診断 - キッチン編</title>
+    <!-- Google Fonts: Inter, Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ea580c; /* Orange for Kitchen theme */
+            --primary-light: #fdba74;
+            --bg-color: #fff7ed;
+            --card-bg: #ffffff;
+            --text-main: #431407;
+            --text-sub: #9a3412;
+            --accent-gradient: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+            --slider-track: #fed7aa;
+            --chart-color: rgba(234, 88, 12, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            min-height: 500px;
+        }
+
+        /* Start Screen */
+        .start-section {
+            padding: 60px 40px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .start-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .start-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+
+        .start-desc {
+            font-size: 1.05rem;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .start-btn {
+            display: inline-block;
+            width: 100%;
+            max-width: 320px;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: white;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 20px -5px rgba(234, 88, 12, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(234, 88, 12, 0.5);
+        }
+
+        /* Header & Progress */
+        .header {
+            padding: 30px 32px 0;
+            display: none;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 12px;
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        
+        .progress-percent {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background-color: #ffedd5;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Question Section */
+        .question-section {
+            padding: 30px 32px 40px;
+            animation: fadeIn 0.5s ease;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            min-height: 3.6em;
+            display: flex;
+            align-items: center;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        /* Slider Styles */
+        .slider-container {
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .slider-voice-bubble {
+            background-color: #fff7ed;
+            color: var(--primary-color);
+            padding: 12px 20px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .slider-voice-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: #fff7ed transparent transparent transparent;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 12px;
+            cursor: pointer;
+            background: var(--slider-track);
+            border-radius: 6px;
+        }
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 12px;
+            cursor: pointer;
+            background: var(--slider-track);
+            border-radius: 6px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 36px;
+            width: 36px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid var(--primary-color);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:active {
+            transform: scale(1.1);
+            background: var(--primary-color);
+        }
+        
+        .slider-scale {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 0 4px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .next-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: white;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 20px -5px rgba(234, 88, 12, 0.4);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(234, 88, 12, 0.5);
+        }
+        .next-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Result Section */
+        .result-section {
+            display: none;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+        
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .result-header {
+            background: var(--accent-gradient);
+            padding: 30px 20px 40px;
+            color: white;
+            border-radius: 24px 24px 0 0;
+            margin: -2px -2px 0;
+        }
+
+        .result-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+        }
+
+        .result-icon {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .result-catch {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .result-body {
+            padding: 24px 32px 40px;
+            background-color: #fff;
+        }
+        
+        /* Chart Section */
+        .chart-container {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            margin: -30px auto 20px; /* Pull up into header area slightly */
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .connection-box {
+            background-color: #fff7ed;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .connection-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .connection-title::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            margin-right: 8px;
+        }
+
+        .connection-list {
+            list-style: none;
+        }
+
+        .connection-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .connection-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 12px;
+        }
+
+        .share-btn {
+            background-color: #ffedd5;
+            color: var(--primary-color);
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .share-btn:hover {
+            background-color: #fed7aa;
+        }
+
+        .restart-btn {
+            background: transparent;
+            color: var(--text-sub);
+            border: 2px solid #fed7aa;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .restart-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--text-main);
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { border-radius: 16px; }
+            .question-text { font-size: 1.15rem; }
+            .result-title { font-size: 1.5rem; }
+            .header { padding: 20px 20px 0; }
+            .question-section { padding: 20px 20px 30px; }
+            .result-body { padding: 20px; }
+            .start-section { padding: 40px 20px; }
+            .chart-container { height: 200px; margin-top: -20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Start Screen -->
+    <div id="start-view" class="start-section">
+        <span class="start-icon">🍳</span>
+        <h1 class="start-title">AI活用スタイル診断</h1>
+        <p class="start-desc">
+            生成AI、あなたの現場での「調理スタイル」は？<br>
+            <br>
+            こだわり手作り派？それとも全自動シェフ？<br>
+            10の質問で、あなたの活用タイプを分析します。
+        </p>
+        <button class="start-btn" onclick="startApp()">診断をスタート</button>
+    </div>
+
+    <!-- Progress & Header -->
+    <div id="header" class="header">
+        <div class="progress-header">
+            <span class="progress-label">Q <span id="current-num">1</span> / 10</span>
+            <span id="progress-percent" class="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
+    </div>
+
+    <!-- Question View -->
+    <div id="question-view" class="question-section">
+        <h2 id="question-text" class="question-text">読み込み中...</h2>
+        
+        <div class="slider-container">
+            <!-- Dynamic Voice Bubble -->
+            <div id="voice-bubble" class="slider-voice-bubble">
+                半々くらいかな
+            </div>
+
+            <input type="range" id="answer-slider" min="1" max="7" value="4" oninput="updateSliderUI(this.value)">
+            
+            <div class="slider-scale">
+                <span>自分のみ</span>
+                <span>AI全任せ</span>
+            </div>
+        </div>
+
+        <button class="next-btn" onclick="handleNext()">決定して次へ</button>
+    </div>
+
+    <!-- Result View -->
+    <div id="result-view" class="result-section">
+        <div class="result-header">
+            <span class="result-badge">診断結果</span>
+            <span id="result-icon" class="result-icon">👨‍🍳</span>
+            <h1 id="result-title" class="result-title">判定中...</h1>
+            <p id="result-catch" class="result-catch">...</p>
+        </div>
+
+        <div class="result-body">
+            <!-- Radar Chart -->
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+
+            <div class="connection-box">
+                <div class="connection-title">このタイプの特徴</div>
+                <ul id="result-points" class="connection-list">
+                    <!-- Points will be inserted here -->
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <button class="share-btn" onclick="copyResult()">
+                    📋 結果をコピーしてシェア
+                </button>
+                <button class="restart-btn" onclick="resetApp()">タイトルに戻る</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Data Definition ---
+    // Categories: 0:探索, 1:対話, 2:創造, 3:技術, 4:判断
+    const questions = [
+        { text: "全く知識のない未知の分野について、調査レポートを作成する", cat: 0 }, // 探索
+        { text: "上司や取引先への、少し言いにくい内容（謝罪や断り）のメール作成", cat: 1 }, // 対話
+        { text: "新規プロジェクトのアイデア出し（質は問わず、とにかく量を出す）", cat: 2 }, // 創造
+        { text: "複雑なExcel関数や正規表現のエラーを解消する", cat: 3 }, // 技術
+        { text: "1時間の会議録画から、議事録と要約を作成する", cat: 3 }, // 技術(効率)
+        { text: "プレゼンテーション資料の全体の構成案（ストーリーライン）を作る", cat: 2 }, // 創造
+        { text: "自分のキャリアの強み・弱みを分析する（自己分析の壁打ち）", cat: 0 }, // 探索(分析)
+        { text: "複数の選択肢から重要な意思決定（A案かB案か）の最終判断をする", cat: 4 }, // 判断
+        { text: "海外クライアント向けの英語メールを作成する（ニュアンス含む）", cat: 1 }, // 対話
+        { text: "部下や同僚へのフィードバック面談の台本を作成する", cat: 4 }  // 判断(マネジメント)
+    ];
+
+    const voiceMessages = {
+        1: "🔥 意地でも自分でやる！",
+        2: "❓️ AI使って大丈夫か",
+        3: "🤔 困ったときは頼むかも",
+        4: "⚖️ 半々くらいかな",
+        5: "✨ AIのほうが得意かな",
+        6: "🤖 ほぼAIにお願い",
+        7: "🚀 秒でAIに丸投げ！"
+    };
+
+    const types = [
+        {
+            range: [10, 22],
+            name: "こだわり手打ち職人",
+            icon: "🍜",
+            catch: "「既製品は信用しない。全てゼロから手作りする」",
+            points: [
+                "AI出力はあくまで「見本」。自分の味（判断）を最優先する姿勢",
+                "機密データの「衛生管理」は完璧。リスクを誰よりも理解している",
+                "たまには「冷凍食品（AI）」も試してみて。意外と美味しいかも？"
+            ]
+        },
+        {
+            range: [23, 34],
+            name: "時短レシピの達人",
+            icon: "🍳",
+            catch: "「素（もと）やカット野菜は使うが、味付けは自分」",
+            points: [
+                "下ごしらえはAIに任せ、最後の仕上げに注力する堅実派",
+                "「AIの嘘」という異物混入を見抜く目利き力がある",
+                "もっとAIに「コース料理」ごと任せても、あなたの腕なら大丈夫"
+            ]
+        },
+        {
+            range: [35, 46],
+            name: "最新家電のシェフ",
+            icon: "🥘",
+            catch: "「便利な家電は何でも使いこなし、失敗しない」",
+            points: [
+                "AIを『超優秀な調理家電』として使い倒すバランス感覚",
+                "プロンプト（設定）で意図通りの出力を得るのが得意",
+                "人間は『メニュー決め』と『最終承認』に特化していこう"
+            ]
+        },
+        {
+            range: [47, 58],
+            name: "厨房の総料理長",
+            icon: "👨‍🍳",
+            catch: "「自分では包丁を握らず、スタッフ（AI）に指示を出す」",
+            points: [
+                "AIへの「指示出し」が巧みで、チームを動かす力がある",
+                "大量のタスク（注文）をAIに捌かせるのが得意",
+                "細かい味見（ファクトチェック）は「達人」タイプに任せよう"
+            ]
+        },
+        {
+            range: [59, 70],
+            name: "3Dフードプリンター",
+            icon: "🖨️",
+            catch: "「ボタン一つで完成品が出力される未来の調理法」",
+            points: [
+                "プロセスごと自動化し、料理（業務）の概念を変える革命児",
+                "AIエージェントに自律的に動いてもらう仕組み作りが得意",
+                "たまに暴走するので「職人」タイプに電源を握っておいてもらおう"
+            ]
+        }
+    ];
+
+    // --- State Management ---
+    let currentIndex = 0;
+    let answers = []; // Stores score (1-7) for each question
+
+    // --- Initialization ---
+    function startApp() {
+        document.getElementById('start-view').style.display = 'none';
+        document.getElementById('header').style.display = 'block';
+        document.getElementById('question-view').style.display = 'block';
+        renderQuestion();
+    }
+
+    function resetApp() {
+        currentIndex = 0;
+        answers = [];
+        document.getElementById('result-view').style.display = 'none';
+        document.getElementById('header').style.display = 'none';
+        document.getElementById('question-view').style.display = 'none';
+        document.getElementById('start-view').style.display = 'block';
+        
+        const slider = document.getElementById('answer-slider');
+        slider.value = 4;
+        updateSliderUI(4);
+    }
+
+    // --- UI Update Functions ---
+    function updateSliderUI(val) {
+        document.getElementById('voice-bubble').textContent = voiceMessages[val];
+    }
+
+    function renderQuestion() {
+        const qText = document.getElementById('question-text');
+        const currentNum = document.getElementById('current-num');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercent = document.getElementById('progress-percent');
+        const slider = document.getElementById('answer-slider');
+
+        // Reset slider
+        slider.value = 4;
+        updateSliderUI(4);
+
+        // Update Content
+        qText.textContent = `Q${currentIndex + 1}. ${questions[currentIndex].text}`;
+        currentNum.textContent = currentIndex + 1;
+
+        // Update Progress
+        const percent = Math.round(((currentIndex) / questions.length) * 100);
+        progressFill.style.width = `${percent}%`;
+        progressPercent.textContent = `${percent}%`;
+        
+        slider.focus();
+    }
+
+    // --- Logic ---
+    function handleNext() {
+        const slider = document.getElementById('answer-slider');
+        const score = parseInt(slider.value, 10);
+        
+        answers.push(score);
+
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            renderQuestion();
+        } else {
+            const finalPercent = 100;
+            document.getElementById('progress-fill').style.width = `${finalPercent}%`;
+            document.getElementById('progress-percent').textContent = `${finalPercent}%`;
+            calculateAndShowResult();
+        }
+    }
+
+    function calculateAndShowResult() {
+        const totalScore = answers.reduce((a, b) => a + b, 0);
+
+        // Determine Type
+        let resultType = types[0];
+        for (let i = 0; i < types.length; i++) {
+            const range = types[i].range;
+            if (totalScore >= range[0] && totalScore <= range[1]) {
+                resultType = types[i];
+                break;
+            }
+        }
+
+        // Calculate Category Scores for Chart
+        // Categories: 0:探索, 1:対話, 2:創造, 3:技術, 4:判断
+        // Each category has 2 questions, max score per cat = 14
+        let catScores = [0, 0, 0, 0, 0];
+        answers.forEach((score, idx) => {
+            const cat = questions[idx].cat;
+            catScores[cat] += score;
+        });
+
+        renderResult(resultType, catScores);
+    }
+
+    function renderResult(data, catScores) {
+        document.getElementById('header').style.display = 'none';
+        document.getElementById('question-view').style.display = 'none';
+        document.getElementById('result-view').style.display = 'block';
+
+        // Text Content
+        document.getElementById('result-icon').textContent = data.icon;
+        document.getElementById('result-title').textContent = data.name;
+        document.getElementById('result-catch').textContent = data.catch;
+
+        const pointsList = document.getElementById('result-points');
+        pointsList.innerHTML = '';
+        data.points.forEach(point => {
+            const li = document.createElement('li');
+            li.textContent = point;
+            pointsList.appendChild(li);
+        });
+
+        // Draw Chart
+        setTimeout(() => drawRadarChart(catScores), 100);
+    }
+
+    // --- Chart.js-less Radar Chart Implementation ---
+    function drawRadarChart(scores) {
+        const canvas = document.getElementById('radarChart');
+        const ctx = canvas.getContext('2d');
+        
+        // Resize canvas for high resolution
+        const size = 220;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        canvas.style.width = `${size}px`;
+        canvas.style.height = `${size}px`;
+        ctx.scale(dpr, dpr);
+
+        const centerX = size / 2;
+        const centerY = size / 2 + 10; // slightly offset
+        const radius = 70;
+        const sides = 5;
+        // Label order matches catScores: 0:探索, 1:対話, 2:創造, 3:技術, 4:判断
+        const labels = ["探索", "対話", "創造", "技術", "判断"];
+        
+        // Background Grid
+        ctx.strokeStyle = '#fed7aa'; // Theme color track
+        ctx.lineWidth = 1;
+        
+        // Draw 3 concentric pentagons
+        for (let level = 1; level <= 3; level++) {
+            ctx.beginPath();
+            for (let i = 0; i < sides; i++) {
+                const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+                const r = (radius / 3) * level;
+                const x = centerX + r * Math.cos(angle);
+                const y = centerY + r * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        // Axis Lines & Labels
+        ctx.fillStyle = '#9a3412'; // Theme text color
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        for (let i = 0; i < sides; i++) {
+            const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            // Axis line
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+
+            // Label text
+            const labelX = centerX + (radius + 20) * Math.cos(angle);
+            const labelY = centerY + (radius + 20) * Math.sin(angle);
+            ctx.fillText(labels[i], labelX, labelY);
+        }
+
+        // Data Shape
+        // scores are out of 14. Normalize to radius.
+        ctx.beginPath();
+        const maxScore = 14;
+        
+        for (let i = 0; i < sides; i++) {
+            const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+            // Min display value: let's say score 0 still shows a tiny bit (20% radius)
+            // effective radius = 20% + (80% * score / 14)
+            const normalized = 0.2 + (0.8 * (scores[i] / maxScore));
+            const r = radius * normalized;
+            const x = centerX + r * Math.cos(angle);
+            const y = centerY + r * Math.sin(angle);
+            
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        
+        // Fill style
+        ctx.fillStyle = 'rgba(234, 88, 12, 0.2)'; // Theme orange transparent
+        ctx.fill();
+        ctx.strokeStyle = '#ea580c'; // Theme orange
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // Dots
+        ctx.fillStyle = '#ea580c';
+        for (let i = 0; i < sides; i++) {
+            const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+            const normalized = 0.2 + (0.8 * (scores[i] / maxScore));
+            const r = radius * normalized;
+            const x = centerX + r * Math.cos(angle);
+            const y = centerY + r * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    // --- Copy Function ---
+    async function copyResult() {
+        const typeName = document.getElementById('result-title').textContent;
+        const textToCopy = `私のAI活用タイプは【${typeName}】でした！\n#AI活用スタイル診断`;
+        const btn = document.querySelector('.share-btn');
+
+        try {
+            // Try modern API
+            await navigator.clipboard.writeText(textToCopy);
+            showCopySuccess(btn);
+        } catch (err) {
+            // Fallback for some iframe environments
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showCopySuccess(btn);
+            } catch (err) {
+                btn.textContent = "❌ コピーできませんでした";
+            }
+            document.body.removeChild(textArea);
+        }
+    }
+
+    function showCopySuccess(btn) {
+        const originalText = btn.textContent;
+        btn.textContent = "✅ コピーしました！";
+        btn.style.backgroundColor = "#dcfce7";
+        btn.style.color = "#166534";
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.backgroundColor = "";
+            btn.style.color = "";
+        }, 2000);
+    }
+    
+    // Add Enter key support
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const qView = document.getElementById('question-view');
+            const sView = document.getElementById('start-view');
+            
+            if (sView.style.display !== 'none') {
+                startApp();
+            } else if (qView.style.display !== 'none') {
+                handleNext();
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
